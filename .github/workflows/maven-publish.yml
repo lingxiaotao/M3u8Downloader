@@ -1,0 +1,34 @@
+#这个工作流将使用Maven构建一个包，然后在创建版本时将其发布到GitHub包
+#更多信息请参见：https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+
+名字: Maven套餐
+
+在:
+释放:
+类型: [创建]
+
+工作:
+建筑:
+
+    runs-on: ubuntu-latest
+权限:
+内容: 阅读
+套餐: 写
+
+步骤:
+    - 用途: actions/checkout@v4
+    - 名字: 设置JDK 11
+用途: actions/setup-java@v4
+与:
+        java-version: '11'
+分布: 'temurin'
+query为空server-id: 吉斯丘xml的distributionManagement/repository/id字段的值
+        settings-path: ${{ github.workspace }} xml文件的#位置
+
+    - 名字: 用Maven构建
+跑: mvn-B包-文件pom.xml
+
+    - 名字: 发布到GitHub包Apache Maven
+跑: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+env:
+        GITHUB_TOKEN: ${{ github.token }}
